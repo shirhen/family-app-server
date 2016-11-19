@@ -7,7 +7,7 @@ const familySchema = new Schema({
   creator: { type: String, required: true },
   lists: [
     {
-      name:{ type: String, required: true, unique:true },
+      name:{ type: String, required: true },
       items: [
         {
           name: { type: String, required: true },
@@ -18,7 +18,7 @@ const familySchema = new Schema({
   ],
   parking: [
     {
-      name: { type: String, required: true, unique: true },
+      name: { type: String, required: true },
       location: String,
       occupied: Boolean
     }
@@ -30,7 +30,7 @@ const familySchema = new Schema({
       participent: { type: [String] }
     }
   ]
-});
+}).index({ name: 1, creator: 1 }, { unique: true });
 
 
 module.exports = mongoose.model('Family', familySchema);
