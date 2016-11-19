@@ -6,9 +6,8 @@ router.route('/')
   .get((...args) => controller.find(...args))
   .post((...args) => controller.create(...args));
 
-router.route('/:id/list')
-    // .get((...args) => controller.findList(...args))
-    .post((...args) => controller.createList(...args));
+router.route('/:id/lists')
+    .post((...args) => controller.saveList(...args));
 
 router.route('/:id')
   .put((...args) => controller.update(...args))

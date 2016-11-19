@@ -3,7 +3,7 @@ const familyFacade  = require('./family-facade');
 // const itemController = require('../item/item-controller');
 
 class FamilyController extends Controller {
-  createList(req, res, next) {
+  saveList(req, res, next) {
     const conditions = { _id: req.params.id, 'lists.name': { $eq: req.body.name } };
 
     familyFacade.update(conditions, {
