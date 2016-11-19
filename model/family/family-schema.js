@@ -10,7 +10,8 @@ const familySchema = new Schema({
       name:{ type: String, required: true, unique:true },
       items: [
         {
-          name: { type: String, required: true }
+          name: { type: String, required: true },
+          amount: { type:Number }
         }
       ]
     }
