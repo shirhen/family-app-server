@@ -1,5 +1,6 @@
 const Controller = require('../../lib/controller');
 const familyFacade  = require('./family-facade');
+// const itemController = require('../item/item-controller');
 
 class FamilyController extends Controller {
   createList(req, res, next) {
@@ -25,6 +26,10 @@ class FamilyController extends Controller {
       }
     })
     .catch(err => next(err));
+    //
+    // if (req.body.items) {
+    //   itemController.addItems(req.body.items);
+    // }
   }
 }
 
