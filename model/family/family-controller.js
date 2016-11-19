@@ -1,6 +1,7 @@
 const Controller = require('../../lib/controller');
 const familyFacade  = require('./family-facade');
 // const itemController = require('../item/item-controller');
+const userController = require('../user/user-controller');
 
 class FamilyController extends Controller {
   saveList(req, res, next) {
@@ -30,6 +31,14 @@ class FamilyController extends Controller {
     // if (req.body.items) {
     //   itemController.addItems(req.body.items);
     // }
+  }
+  create(req, res, next) {
+    familyFacade.create(req.body)
+    .then(doc => {
+      userController.addCreatedFamily(doc._id, doc.creator);
+      return res.status(201).json(doc);
+    })
+    .catch(err => next(err));
   }
 }
 
