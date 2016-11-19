@@ -33,6 +33,12 @@ class FamilyController extends Controller {
     // }
   }
   create(req, res, next) {
+    if (!req.body.user) {
+      req.body.users = [];
+      req.body.users.push(req.body.creator);
+    } else if (req.body.filter(user => user === req.body.creator).lenght) {
+      req.body.users.push(req.body.creator);
+    }
     familyFacade.create(req.body)
     .then(doc => {
       if (!doc) { return res.status(404).end(); }
@@ -47,6 +53,24 @@ class FamilyController extends Controller {
       if (!doc) { return res.status(404).end(); }
       userController.removeFamily(req.params.id);
       return res.status(204).end();
+    })
+    .catch(err => next(err));
+  }
+  addUser(req, res, next) {
+    const conditions = { _id: req.params.id };
+    familyFacade.update(conditions, { $push:{ users:req.body.username } })
+    .then(doc => {
+      if (!doc) { return res.status(404).end(); }
+      return res.status(200).json(doc);
+    })
+    .catch(err => next(err));
+  }
+  removeUser(req, res, next) {
+    const conditions = { _id: req.params.id };
+    familyFacade.update(conditions, { $pull:{ users:req.body.username } })
+    .then(doc => {
+      if (!doc) { return res.status(404).end(); }
+      return res.status(200).json(doc);
     })
     .catch(err => next(err));
   }

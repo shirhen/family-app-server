@@ -9,6 +9,10 @@ router.route('/')
 router.route('/:id/lists')
     .post((...args) => controller.saveList(...args));
 
+router.route('/:id/users')
+    .post((...args) => controller.addUser(...args))
+    .delete((...args) => controller.removeUser(...args));
+
 router.route('/:id')
   .put((...args) => controller.update(...args))
   .get((...args) => controller.findById(...args))
