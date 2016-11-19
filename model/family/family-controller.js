@@ -35,8 +35,18 @@ class FamilyController extends Controller {
   create(req, res, next) {
     familyFacade.create(req.body)
     .then(doc => {
+      if (!doc) { return res.status(404).end(); }
       userController.addCreatedFamily(doc._id, doc.creator);
       return res.status(201).json(doc);
+    })
+    .catch(err => next(err));
+  }
+  remove(req, res, next) {
+    familyFacade.remove(req.params.id)
+    .then(doc => {
+      if (!doc) { return res.status(404).end(); }
+      userController.removeFamily(req.params.id);
+      return res.status(204).end();
     })
     .catch(err => next(err));
   }
