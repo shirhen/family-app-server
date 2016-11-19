@@ -2,10 +2,10 @@ const Controller = require('../../lib/controller');
 const userFacade  = require('./user-facade');
 
 class UserController extends Controller {
-  addCreatedFamily(id, creator) {
-    const conditions = { username: creator };
+  addFamily(id, user, isCreator) {
+    const conditions = { username: user };
 
-    userFacade.update(conditions, { $push:{ families:{ id, creator:true } } })
+    userFacade.update(conditions, { $push:{ families:{ id, creator:isCreator } } })
     .then(doc => {
       if (!doc) { return console.dir(doc); }
       return console.dir(doc);
@@ -15,7 +15,16 @@ class UserController extends Controller {
 
   removeFamily(id) {
     const conditions = { 'families.id': id };
+    userFacade.update(conditions, { $pull: { families:{ id } } })
+    .then(doc => {
+      if (!doc) { return console.dir(doc); }
+      return console.dir(doc);
+    })
+    .catch(err => console.dir(err));
+  }
 
+  removeUserFamily(id, username) {
+    const conditions = { 'families.id': id, username };
     userFacade.update(conditions, { $pull: { families:{ id } } })
     .then(doc => {
       if (!doc) { return console.dir(doc); }
