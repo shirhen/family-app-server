@@ -14,6 +14,13 @@ router.route('/:id/users')
     .post((...args) => controller.addUser(...args))
     .delete((...args) => controller.removeUser(...args));
 
+router.route('/:id/parking')
+    .post((...args) => controller.addParking(...args))
+    .delete((...args) => controller.removeParking(...args));
+
+router.route('/:id/parking/status')
+    .post((...args) => controller.changeParkingStatus(...args));
+
 router.route('/:id')
   .put((...args) => controller.update(...args))
   .get((...args) => controller.findById(...args))

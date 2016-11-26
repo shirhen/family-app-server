@@ -96,6 +96,18 @@ class FamilyController extends Controller {
     })
     .catch(err => next(err));
   }
+
+  addParking(req, res, next) {
+    const conditions = { _id: req.params.id };
+    Object.assign(req.body, { occupied:false });
+    familyFacade.update(conditions, {
+
+      $push: { parking: req.body }
+    }).then(doc => {
+      if (!doc) { return res.status(404).end(); }
+      return res.status(200).json({ doc });
+    }).catch(err => next(err));
+  }
 }
 
 module.exports = new FamilyController(familyFacade);
