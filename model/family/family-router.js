@@ -7,7 +7,8 @@ router.route('/')
   .post((...args) => controller.create(...args));
 
 router.route('/:id/lists')
-    .post((...args) => controller.saveList(...args));
+    .post((...args) => controller.saveList(...args))
+    .delete((...args) => controller.removeList(...args));
 
 router.route('/:id/users')
     .post((...args) => controller.addUser(...args))

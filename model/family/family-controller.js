@@ -86,6 +86,16 @@ class FamilyController extends Controller {
   addUsers(req, res, next) {
     req.body.users.forEach((user) => { req.body.username = user.username; this.addUser(req, res, next); });
   }
+
+  removeList(req, res, next) {
+    const conditions = { _id: req.params.id, 'lists._id': { $eq: req.body.list._id } };
+    familyFacade.update(conditions, { $pull:{ lists:{ _id:req.body.list._id } } })
+    .then(doc => {
+      if (!doc) { return res.status(404).end(); }
+      return res.status(204).json(doc);
+    })
+    .catch(err => next(err));
+  }
 }
 
 module.exports = new FamilyController(familyFacade);
