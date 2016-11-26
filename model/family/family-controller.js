@@ -57,14 +57,20 @@ class FamilyController extends Controller {
     .catch(err => next(err));
   }
   addUser(req, res, next) {
-    const conditions = { _id: req.params.id };
-    familyFacade.update(conditions, { $push:{ users:req.body.username } })
-    .then(doc => {
-      if (!doc) { return res.status(404).end(); }
-      userController.addFamily(req.params.id, req.body.username, false);
-      return res.status(200).json(doc);
-    })
-    .catch(err => next(err));
+    Promise.resolve(userController.findUser(req.body.username)).then(doc => {
+      if (doc) {
+        const conditions = { _id: req.params.id };
+        familyFacade.update(conditions, { $push:{ users:req.body.username } })
+        .then(doc => {
+          if (!doc) { return res.status(404).end(); }
+          userController.addFamily(req.params.id, req.body.username, false);
+          return res.status(200).json(doc);
+        })
+        .catch(err => next(err));
+      } else {
+        return res.status(404).json({ error:"User don't exists" });
+      }
+    });
   }
   removeUser(req, res, next) {
     const conditions = { _id: req.params.id };
@@ -75,6 +81,10 @@ class FamilyController extends Controller {
       return res.status(204).json(doc);
     })
     .catch(err => next(err));
+  }
+
+  addUsers(req, res, next) {
+    req.body.users.forEach((user) => { req.body.username = user.username; this.addUser(req, res, next); });
   }
 }
 

@@ -32,6 +32,11 @@ class UserController extends Controller {
     })
     .catch(err => console.dir(err));
   }
+
+  findUser(username) {
+    const query = { username };
+    return userFacade.findOne(query);
+  }
 }
 
 module.exports = new UserController(userFacade);
